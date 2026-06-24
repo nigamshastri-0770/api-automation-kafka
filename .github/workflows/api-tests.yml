@@ -1,16 +1,11 @@
 name: API Automation Pipeline
 
 on:
-
   push:
-
-    branches:
-      - main
+    branches: [main]
 
   pull_request:
-
-    branches:
-      - main
+    branches: [main]
 
 jobs:
 
@@ -18,29 +13,37 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
+    services:
 
-      matrix:
+      zookeeper:
+        image: confluentinc/cp-zookeeper:latest
+        ports:
+          - 2181:2181
+        env:
+          ZOOKEEPER_CLIENT_PORT: 2181
 
-        python-version:
-          - "3.13"
+      kafka:
+        image: confluentinc/cp-kafka:latest
+
+        ports:
+          - 9092:9092
+
+        env:
+          KAFKA_BROKER_ID: 1
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
     steps:
 
-      - name: Checkout
+      - uses: actions/checkout@v4
 
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-
-        uses: actions/setup-python@v5
-
+      - uses: actions/setup-python@v5
         with:
+          python-version: "3.13"
 
-          python-version:
-            ${{ matrix.python-version }}
-
-      - name: Install Dependencies
+      - name: Install
 
         run: |
 
@@ -48,7 +51,11 @@ jobs:
 
           pip install -r requirements.txt
 
-          pip install pytest allure-pytest pytest-cov
+      - name: Wait for Kafka
+
+        run: |
+
+          sleep 40
 
       - name: Run Tests
 
@@ -56,30 +63,8 @@ jobs:
 
           REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
 
+          PYTHONPATH: .
+
         run: |
 
-          export PYTHONPATH=.
-
-          pytest \
-            -v \
-            --alluredir=reports
-
-      - name: Upload Allure
-
-        uses: actions/upload-artifact@v4
-
-        with:
-
-          name: allure-results
-
-          path: reports/
-
-      - name: Upload Coverage
-
-        uses: actions/upload-artifact@v4
-
-        with:
-
-          name: coverage
-
-          path: .
+          pytest -v
