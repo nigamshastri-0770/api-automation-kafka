@@ -1,5 +1,8 @@
 pytest
 requests
 kafka-python
-psycopg[binary]
+python-dotenv
+jsonschema
 allure-pytest
+pytest-cov
+psycopg[binary]

@@ -20,6 +20,10 @@ class AuthAPI:
         password
     ):
 
+        assert (
+            REQRES_API_KEY
+        ), "free_user_3EqwNfJjHbaSI4VWRBchJllgjn9"
+
         response = safe_request(
 
             "POST",
@@ -32,10 +36,6 @@ class AuthAPI:
             },
 
             headers={
-
-                "Content-Type":
-                "application/json",
-
                 "x-api-key":
                 REQRES_API_KEY
             }
@@ -51,6 +51,10 @@ class AuthAPI:
             response.text
         )
 
-        assert response.status_code == 200
+        if response.status_code != 200:
+
+            raise AssertionError(
+                f"Login failed: {response.status_code}"
+            )
 
         return response.json()
