@@ -1,21 +1,39 @@
-from kafka import KafkaProducer, KafkaConsumer # pyright: ignore[reportMissingImports]
+from kafka import KafkaConsumer
+from kafka import KafkaProducer
 import json
-from kafka_client_lib.config import KAFKA_BROKER, GROUP_ID
 
 
 def get_producer():
+
     return KafkaProducer(
-        bootstrap_servers=KAFKA_BROKER,
-        value_serializer=lambda v: json.dumps(v).encode("utf-8")
+
+        bootstrap_servers="localhost:9092",
+
+        value_serializer=lambda x:
+        json.dumps(x).encode("utf-8")
     )
 
 
 def get_consumer(topic):
-    return KafkaConsumer(
+
+    consumer = KafkaConsumer(
+
         topic,
-        bootstrap_servers=KAFKA_BROKER,
-        group_id=GROUP_ID,
-        auto_offset_reset="latest",
+
+        bootstrap_servers="localhost:9092",
+
+        auto_offset_reset="earliest",
+
         enable_auto_commit=True,
-        value_deserializer=lambda v: json.loads(v.decode("utf-8"))
+
+        group_id=None,
+
+        value_deserializer=lambda x:
+        json.loads(
+            x.decode(
+                "utf-8"
+            )
+        )
     )
+
+    return consumer

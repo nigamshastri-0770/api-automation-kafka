@@ -1,17 +1,14 @@
-from core.retry_handler import safe_request
-
 from config.setting import (
     BASE_URL,
     REQRES_API_KEY
 )
 
+from core.retry_handler import safe_request
+
 
 class AuthAPI:
 
-    def __init__(
-        self,
-        base_url=BASE_URL
-    ):
+    def __init__(self, base_url=BASE_URL):
         self.base_url = base_url
 
     def login(
@@ -20,9 +17,7 @@ class AuthAPI:
         password
     ):
 
-        assert (
-            REQRES_API_KEY
-        ), "free_user_3EqwNfJjHbaSI4VWRBchJllgjn9"
+        assert REQRES_API_KEY, "REQRES_API_KEY missing"
 
         response = safe_request(
 
@@ -36,25 +31,12 @@ class AuthAPI:
             },
 
             headers={
-                "x-api-key":
-                REQRES_API_KEY
+                "x-api-key": REQRES_API_KEY
             }
         )
 
-        print(
-            "STATUS:",
-            response.status_code
-        )
+        print(response.status_code)
 
-        print(
-            "BODY:",
-            response.text
-        )
-
-        if response.status_code != 200:
-
-            raise AssertionError(
-                f"Login failed: {response.status_code}"
-            )
+        assert response.status_code == 200
 
         return response.json()

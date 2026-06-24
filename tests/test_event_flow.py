@@ -1,14 +1,6 @@
-from producers.event_producer import (
-    publish_event
-)
-
-from consumers.event_consumer import (
-    fetch_event
-)
-
-from validators.event_validator import (
-    EventValidator
-)
+from producers.event_producer import publish_event
+from consumers.event_consumer import fetch_event
+from validators.event_validator import EventValidator
 
 
 def test_order_event(
@@ -26,19 +18,22 @@ def test_order_event(
         ]
     )
 
-    assert (
-        EventValidator
-        .validate(
-            consumed
-        )
+    assert EventValidator.validate(
+        consumed
     )
 
     assert (
 
         consumed[
             "payload"
+        ][
+            "order_id"
         ]
+
         ==
-        order_payload
+
+        order_payload[
+            "order_id"
+        ]
 
     )

@@ -20,16 +20,10 @@ def fetch_event(
 
     start = time.time()
 
-    while (
-        time.time()
-        -
-        start
-        <
-        timeout
-    ):
+    while time.time() - start < timeout:
 
         records = consumer.poll(
-            timeout_ms=1000
+            timeout_ms=3000
         )
 
         for _, msgs in records.items():
@@ -38,11 +32,12 @@ def fetch_event(
 
                 event = msg.value
 
-                if (
-                    correlation_id
-                    is None
-                ):
+                print(
+                    "RECEIVED:",
+                    event
+                )
 
+                if correlation_id is None:
                     return event
 
                 if (
@@ -52,7 +47,6 @@ def fetch_event(
                     ==
                     correlation_id
                 ):
-
                     return event
 
     raise Exception(
@@ -63,7 +57,6 @@ def fetch_event(
 def fetch_latest_event(
         timeout=20
 ):
-
     return fetch_event(
         timeout=timeout
     )

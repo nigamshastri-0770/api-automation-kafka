@@ -1,18 +1,15 @@
 from jsonschema import validate
-
-from schemas.event_schema import (
-    EVENT_SCHEMA
-)
+from schemas.event_schema import EVENT_SCHEMA
 
 
 class EventValidator:
 
     @staticmethod
-    def validate(event):
+    def validate(data):
 
         validate(
-            event,
-            EVENT_SCHEMA
+            instance=data,
+            schema=EVENT_SCHEMA
         )
 
         return True
