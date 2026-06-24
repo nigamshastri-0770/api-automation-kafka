@@ -1,39 +1,49 @@
-from kafka import KafkaConsumer
 from kafka import KafkaProducer
+from kafka import KafkaConsumer
 import json
+
+from config.setting import (
+    KAFKA_SERVER
+)
+
+
+def serializer(data):
+    return json.dumps(
+        data
+    ).encode(
+        "utf-8"
+    )
+
+
+def deserializer(data):
+    return json.loads(
+        data.decode(
+            "utf-8"
+        )
+    )
 
 
 def get_producer():
 
     return KafkaProducer(
 
-        bootstrap_servers="localhost:9092",
+        bootstrap_servers=KAFKA_SERVER,
 
-        value_serializer=lambda x:
-        json.dumps(x).encode("utf-8")
+        value_serializer=serializer
     )
 
 
 def get_consumer(topic):
 
-    consumer = KafkaConsumer(
+    return KafkaConsumer(
 
         topic,
 
-        bootstrap_servers="localhost:9092",
+        bootstrap_servers=KAFKA_SERVER,
 
         auto_offset_reset="earliest",
 
-        enable_auto_commit=True,
+        value_deserializer=deserializer,
 
-        group_id=None,
-
-        value_deserializer=lambda x:
-        json.loads(
-            x.decode(
-                "utf-8"
-            )
-        )
+        group_id=None
     )
-
-    return consumer

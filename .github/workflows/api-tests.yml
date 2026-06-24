@@ -13,72 +13,72 @@ jobs:
     services:
 
       zookeeper:
-
-        image: confluentinc/cp-zookeeper:latest
-
-        ports:
-          - 2181:2181
+        image: confluentinc/cp-zookeeper:7.6.0
 
         env:
           ZOOKEEPER_CLIENT_PORT: 2181
 
-      kafka:
+        ports:
+          - 2181:2181
 
-        image: confluentinc/cp-kafka:latest
+      kafka:
+        image: confluentinc/cp-kafka:7.6.0
+
+        env:
+          KAFKA_BROKER_ID: 1
+
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+          KAFKA_LISTENERS: PLAINTEXT://:9092
+
+          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+
+          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+          KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
 
         ports:
           - 9092:9092
 
-        env:
-          KAFKA_BROKER_ID: 1
-          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-
-          KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-
-          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-
-          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
     steps:
 
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Python
-
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
 
         with:
-
           python-version: "3.13"
 
-      - name: Install
+      - name: Install dependencies
 
         run: |
 
-          python -m pip install --upgrade pip
+          pip install --upgrade pip
 
           pip install -r requirements.txt
 
-      - name: Export Secrets
+      - name: Wait for Kafka
+
+        run: |
+
+          sleep 40
+
+      - name: Set env
 
         run: |
 
           echo "REQRES_API_KEY=${{ secrets.REQRES_API_KEY }}" >> $GITHUB_ENV
+          echo "KAFKA_BOOTSTRAP_SERVERS=kafka:9092" >> $GITHUB_ENV
 
-      - name: Wait Kafka
-
-        run: |
-
-          sleep 30
-
-      - name: Run Tests
+      - name: Run tests
 
         env:
 
           PYTHONPATH: .
 
           REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
+
+          KAFKA_BOOTSTRAP_SERVERS: kafka:9092
 
         run: |
 
