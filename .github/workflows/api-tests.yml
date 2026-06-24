@@ -52,12 +52,17 @@ jobs:
 
       - name: Run Tests
 
+        env:
+
+          REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
+
         run: |
 
-          PYTHONPATH=. pytest \
-          -v \
-          --cov=. \
-          --alluredir=reports
+          export PYTHONPATH=.
+
+          pytest \
+            -v \
+            --alluredir=reports
 
       - name: Upload Allure
 
