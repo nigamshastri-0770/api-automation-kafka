@@ -1,28 +1,29 @@
-name: API Automation Pipeline
+name: API Tests
 
 on:
   push:
-    branches: [main]
-
   pull_request:
-    branches: [main]
 
 jobs:
 
-  api-tests:
+  test:
 
     runs-on: ubuntu-latest
 
     services:
 
       zookeeper:
+
         image: confluentinc/cp-zookeeper:latest
+
         ports:
           - 2181:2181
+
         env:
           ZOOKEEPER_CLIENT_PORT: 2181
 
       kafka:
+
         image: confluentinc/cp-kafka:latest
 
         ports:
@@ -31,16 +32,24 @@ jobs:
         env:
           KAFKA_BROKER_ID: 1
           KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
           KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+
           KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+
           KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
     steps:
 
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Setup Python
+
+        uses: actions/setup-python@v5
+
         with:
+
           python-version: "3.13"
 
       - name: Install
@@ -51,24 +60,26 @@ jobs:
 
           pip install -r requirements.txt
 
-      - name: Wait for Kafka
+      - name: Export Secrets
 
         run: |
 
-          sleep 40
+          echo "REQRES_API_KEY=${{ secrets.REQRES_API_KEY }}" >> $GITHUB_ENV
+
+      - name: Wait Kafka
+
+        run: |
+
+          sleep 30
 
       - name: Run Tests
 
         env:
 
-          REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
-
           PYTHONPATH: .
 
-        run: |
-             export PYTHONPATH=.
+          REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
 
-              pytest \
-               -v \
-                 -s \
-                 --tb=long
+        run: |
+
+          pytest -v -s
