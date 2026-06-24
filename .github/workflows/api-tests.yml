@@ -66,5 +66,9 @@ jobs:
           PYTHONPATH: .
 
         run: |
+             export PYTHONPATH=.
 
-          pytest -v
+              pytest \
+               -v \
+                 -s \
+                 --tb=long
