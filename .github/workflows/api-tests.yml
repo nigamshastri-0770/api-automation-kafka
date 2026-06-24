@@ -13,6 +13,7 @@ jobs:
     services:
 
       zookeeper:
+
         image: confluentinc/cp-zookeeper:7.6.0
 
         env:
@@ -22,64 +23,62 @@ jobs:
           - 2181:2181
 
       kafka:
+
         image: confluentinc/cp-kafka:7.6.0
+
+        ports:
+          - 9092:9092
 
         env:
           KAFKA_BROKER_ID: 1
 
           KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 
-          KAFKA_LISTENERS: PLAINTEXT://:9092
+          KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
 
-          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+
+          KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
 
           KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
           KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-
-        ports:
-          - 9092:9092
 
     steps:
 
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
-
         with:
           python-version: "3.13"
 
-      - name: Install dependencies
-
+      - name: Install
         run: |
-
           pip install --upgrade pip
-
           pip install -r requirements.txt
 
-      - name: Wait for Kafka
-
-        run: |
-
-          sleep 40
-
       - name: Set env
+        run: |
+          echo "REQRES_API_KEY=${{ secrets.REQRES_API_KEY }}" >> $GITHUB_ENV
+          echo "KAFKA_BOOTSTRAP_SERVERS=localhost:9092" >> $GITHUB_ENV
 
+      - name: Wait Kafka
         run: |
 
-          echo "REQRES_API_KEY=${{ secrets.REQRES_API_KEY }}" >> $GITHUB_ENV
-          echo "KAFKA_BOOTSTRAP_SERVERS=kafka:9092" >> $GITHUB_ENV
+          echo "Waiting Kafka..."
+
+          timeout 90 bash -c '
+          until nc -z localhost 9092
+          do
+            sleep 5
+          done
+          '
 
       - name: Run tests
-
         env:
-
           PYTHONPATH: .
-
           REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
-
-          KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+          KAFKA_BOOTSTRAP_SERVERS: localhost:9092
 
         run: |
-
           pytest -v -s
