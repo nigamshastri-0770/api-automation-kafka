@@ -4,44 +4,85 @@ from kafka_client_lib.kafka_client import (
     get_producer
 )
 
+from config.setting import (
+    KAFKA_TOPIC
+)
+
+from core.logger import (
+    get_logger
+)
+
+
+logger = get_logger(
+    __name__
+)
+
 
 def publish_event(
         payload
 ):
 
-    producer = (
-        get_producer()
-    )
+    producer = None
 
-    event = {
+    try:
 
-        "event_id": str(
-            uuid.uuid4()
-        ),
-
-        "correlation_id": str(
-            uuid.uuid4()
-        ),
-
-        "type": "ORDER_CREATED",
-
-        "payload": payload
-    }
-
-    future = (
-
-        producer.send(
-            "orders",
-            event
+        producer = (
+            get_producer()
         )
-    )
 
-    future.get(
-        timeout=10
-    )
+        event = {
 
-    producer.flush()
+            "event_id": str(
+                uuid.uuid4()
+            ),
 
-    producer.close()
+            "correlation_id": str(
+                uuid.uuid4()
+            ),
 
-    return event
+            "type": "ORDER_CREATED",
+
+            "payload": payload
+        }
+
+        logger.info(
+            f"Publishing event: {event}"
+        )
+
+        future = (
+
+            producer.send(
+                KAFKA_TOPIC,
+                event
+            )
+        )
+
+        metadata = future.get(
+            timeout=10
+        )
+
+        logger.info(
+            f"Published partition={metadata.partition}"
+        )
+
+        producer.flush()
+
+        return event
+
+    except Exception as e:
+
+        logger.error(
+            f"Producer failed: {str(e)}"
+        )
+
+        raise
+
+    finally:
+
+        if producer:
+
+            producer.close()
+
+            logger.info(
+                "Producer closed"
+            )
