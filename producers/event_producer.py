@@ -1,12 +1,17 @@
 import uuid
 
-from kafka_client_lib.kafka_client import get_producer
-from config.setting import KAFKA_TOPIC
+from kafka_client_lib.kafka_client import (
+    get_producer
+)
 
 
-def publish_event(payload):
+def publish_event(
+        payload
+):
 
-    producer = get_producer()
+    producer = (
+        get_producer()
+    )
 
     event = {
 
@@ -23,11 +28,20 @@ def publish_event(payload):
         "payload": payload
     }
 
-    producer.send(
-        KAFKA_TOPIC,
-        value=event
+    future = (
+
+        producer.send(
+            "orders",
+            event
+        )
+    )
+
+    future.get(
+        timeout=10
     )
 
     producer.flush()
+
+    producer.close()
 
     return event

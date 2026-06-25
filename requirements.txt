@@ -5,4 +5,4 @@ python-dotenv
 jsonschema
 allure-pytest
 pytest-cov
-psycopg[binary]
+psycopg[binary]s

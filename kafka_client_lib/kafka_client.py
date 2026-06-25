@@ -1,6 +1,9 @@
 from kafka import KafkaProducer
 from kafka import KafkaConsumer
+from kafka.errors import NoBrokersAvailable
+
 import json
+import time
 
 from config.setting import (
     KAFKA_SERVER
@@ -8,6 +11,7 @@ from config.setting import (
 
 
 def serializer(data):
+
     return json.dumps(
         data
     ).encode(
@@ -16,6 +20,7 @@ def serializer(data):
 
 
 def deserializer(data):
+
     return json.loads(
         data.decode(
             "utf-8"
@@ -23,27 +28,80 @@ def deserializer(data):
     )
 
 
-def get_producer():
+def get_producer(
+        retries=5
+):
 
-    return KafkaProducer(
+    delay = 2
 
-        bootstrap_servers=KAFKA_SERVER,
+    for attempt in range(retries):
 
-        value_serializer=serializer
-    )
+        try:
+
+            return KafkaProducer(
+
+                bootstrap_servers=KAFKA_SERVER,
+
+                value_serializer=serializer,
+
+                retries=5,
+
+                request_timeout_ms=10000,
+
+                api_version=(3, 6)
+            )
+
+        except NoBrokersAvailable:
+
+            if attempt == retries - 1:
+                raise
+
+            print(
+                f"Kafka retry {attempt + 1}/{retries}"
+            )
+
+            time.sleep(
+                delay
+            )
+
+            delay *= 2
 
 
-def get_consumer(topic):
-
-    return KafkaConsumer(
-
+def get_consumer(
         topic,
+        retries=5
+):
 
-        bootstrap_servers=KAFKA_SERVER,
+    delay = 2
 
-        auto_offset_reset="earliest",
+    for attempt in range(retries):
 
-        value_deserializer=deserializer,
+        try:
 
-        group_id=None
-    )
+            return KafkaConsumer(
+
+                topic,
+
+                bootstrap_servers=KAFKA_SERVER,
+
+                auto_offset_reset="earliest",
+
+                value_deserializer=deserializer,
+
+                group_id=None
+            )
+
+        except NoBrokersAvailable:
+
+            if attempt == retries - 1:
+                raise
+
+            print(
+                f"Consumer retry {attempt + 1}/{retries}"
+            )
+
+            time.sleep(
+                delay
+            )
+
+            delay *= 2
