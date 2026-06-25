@@ -1,6 +1,6 @@
 from kafka import KafkaProducer
 from kafka import KafkaConsumer
-from kafka.errors import NoBrokersAvailable
+from kafka.errors import KafkaError
 
 import json
 import time
@@ -51,7 +51,7 @@ def get_producer(
                 api_version=(3, 6)
             )
 
-        except NoBrokersAvailable:
+        except KafkaError:
 
             if attempt == retries - 1:
                 raise
@@ -91,7 +91,7 @@ def get_consumer(
                 group_id=None
             )
 
-        except NoBrokersAvailable:
+        except KafkaError:
 
             if attempt == retries - 1:
                 raise
