@@ -6,3 +6,4 @@ jsonschema
 allure-pytest
 pytest-cov
 psycopg[binary]
+pytest-xdist

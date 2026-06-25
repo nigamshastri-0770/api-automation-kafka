@@ -1,0 +1,34 @@
+2026-06-25 16:20:15,283 | INFO | Publishing event: {'event_id': '3f6553ca-c625-49e2-955d-7afa3756af73', 'correlation_id': '3d0c31b8-3752-4d51-ab83-1987c8da5f35', 'type': 'ORDER_CREATED', 'payload': {'order_id': 101, 'amount': 500}}
+2026-06-25 16:20:15,308 | INFO | Published partition=0
+2026-06-25 16:20:15,309 | INFO | Producer closed
+2026-06-25 16:20:15,331 | INFO | Consumed: {'event_id': '656885a4-01d9-431a-8983-b97ecefa0f7c', 'correlation_id': '1914f1db-dd60-44d6-9959-c3f4d501ce53', 'type': 'ORDER_CREATED', 'payload': {'order_id': 101, 'amount': 500}}
+2026-06-25 16:20:15,331 | INFO | Consumer closed
+2026-06-25 16:20:15,339 | INFO | Publishing event: {'event_id': 'a1a8d672-6287-4011-8bc2-f4cbf02c60b5', 'correlation_id': 'b141a155-5b56-4a48-b51a-f424191b92c7', 'type': 'ORDER_CREATED', 'payload': {'order_id': 1001, 'amount': 500}}
+2026-06-25 16:20:15,352 | INFO | Published partition=0
+2026-06-25 16:20:15,353 | INFO | Producer closed
+2026-06-25 16:20:15,373 | INFO | Consumed: {'event_id': '656885a4-01d9-431a-8983-b97ecefa0f7c', 'correlation_id': '1914f1db-dd60-44d6-9959-c3f4d501ce53', 'type': 'ORDER_CREATED', 'payload': {'order_id': 101, 'amount': 500}}
+2026-06-25 16:20:15,373 | INFO | Consumed: {'event_id': '2057ef79-1d39-4e62-a0e9-4535b79df72b', 'correlation_id': 'ff675ebf-d005-4544-96fa-d8e7308a4d19', 'type': 'ORDER_CREATED', 'payload': {'order_id': 1001, 'amount': 500}}
+2026-06-25 16:20:15,373 | INFO | Consumed: {'order_id': 101, 'amount': 500, 'correlation_id': 'abd9fb19-39e7-4e84-b2a6-5e6d793bd018'}
+2026-06-25 16:20:15,374 | INFO | Consumed: {'order_id': 1001, 'amount': 500, 'correlation_id': 'e82846a1-2e48-4c6b-98ee-e31d64593731'}
+2026-06-25 16:20:15,374 | INFO | Consumed: {'event_id': '1c748500-1986-4bbe-a922-04ceafc85925', 'correlation_id': 'cb0411b5-d7f0-4e99-a477-ca043431870b', 'type': 'ORDER_CREATED', 'payload': {'order_id': 101, 'amount': 500}}
+2026-06-25 16:20:15,374 | INFO | Consumed: {'event_id': 'f2e92ac3-8de7-4b77-8aa8-dc094335d510', 'correlation_id': '6ee26ab7-ca9e-42d9-8d08-882b40088c44', 'type': 'ORDER_CREATED', 'payload': {'order_id': 1001, 'amount': 500}}
+2026-06-25 16:20:15,374 | INFO | Consumed: {'event_id': '69d10153-6e24-4396-a194-22575744200a', 'correlation_id': 'e13db475-09fa-45f7-bf99-6dc19a34dff2', 'type': 'ORDER_CREATED', 'payload': {'order_id': 101, 'amount': 500}}
+2026-06-25 16:20:15,374 | INFO | Consumed: {'event_id': 'bc59ffe8-888e-48c6-a6cd-e49b84c7799a', 'correlation_id': '6f22aa76-2578-4373-ad96-16a88b11525d', 'type': 'ORDER_CREATED', 'payload': {'order_id': 1001, 'amount': 500}}
+2026-06-25 16:20:15,374 | INFO | Consumed: {'event_id': '54713bfe-cc5f-44a5-8e6b-f478a2517b6e', 'correlation_id': '73c6fcf3-31aa-413c-847d-8ae60f7ee897', 'type': 'ORDER_CREATED', 'payload': {'order_id': 101, 'amount': 500}}
+2026-06-25 16:20:15,375 | INFO | Consumed: {'event_id': '5e4100cf-3c2e-4502-b7ec-ac29fb4f1f3e', 'correlation_id': '2c01f23a-c1ba-4e7a-95b1-b2bfd3abaea4', 'type': 'ORDER_CREATED', 'payload': {'order_id': 1001, 'amount': 500}}
+2026-06-25 16:20:15,375 | INFO | Consumed: {'order_id': 101, 'amount': 500}
+2026-06-25 16:20:15,375 | INFO | Consumed: {'order_id': 1001, 'amount': 500}
+2026-06-25 16:20:15,375 | INFO | Consumed: {'order_id': 200, 'amount': 900}
+2026-06-25 16:20:15,375 | INFO | Consumed: {'order_id': 101, 'amount': 500, 'correlation_id': '7af21208-6d28-4d40-bd89-1bf798a888b7'}
+2026-06-25 16:20:15,375 | INFO | Consumed: {'order_id': 1001, 'amount': 500, 'correlation_id': 'cb33b46b-7dc2-4846-8f94-22f86cb3b48c'}
+2026-06-25 16:20:15,376 | INFO | Consumed: {'order_id': 200, 'amount': 900, 'correlation_id': 'f57fb5b6-4cb3-4ce1-b8b2-90344f367b10'}
+2026-06-25 16:20:15,376 | INFO | Consumed: {'event_id': '5c1ce96d-e6b2-4627-9530-66698ba5c0b6', 'correlation_id': '9cb839c6-c5b3-4bce-b55b-c181a01d6cda', 'type': 'ORDER_CREATED', 'payload': {'order_id': 101, 'amount': 500}}
+2026-06-25 16:20:15,376 | INFO | Consumed: {'event_id': '17669f85-ed30-4af1-ad24-f7d24e5afe91', 'correlation_id': '703263cc-9044-452e-8e77-26ab015bed09', 'type': 'ORDER_CREATED', 'payload': {'order_id': 1001, 'amount': 500}}
+2026-06-25 16:20:15,376 | INFO | Consumed: {'event_id': 'e0d6ca65-ff91-4e29-92e5-ddfa935f233b', 'correlation_id': '76cc9896-9350-47fc-8d3e-b26db37dc52a', 'type': 'ORDER_CREATED', 'payload': {'order_id': 200, 'amount': 900}}
+2026-06-25 16:20:15,376 | INFO | Consumed: {'event_id': '3f6553ca-c625-49e2-955d-7afa3756af73', 'correlation_id': '3d0c31b8-3752-4d51-ab83-1987c8da5f35', 'type': 'ORDER_CREATED', 'payload': {'order_id': 101, 'amount': 500}}
+2026-06-25 16:20:15,377 | INFO | Consumed: {'event_id': 'a1a8d672-6287-4011-8bc2-f4cbf02c60b5', 'correlation_id': 'b141a155-5b56-4a48-b51a-f424191b92c7', 'type': 'ORDER_CREATED', 'payload': {'order_id': 1001, 'amount': 500}}
+2026-06-25 16:20:15,377 | INFO | Matched event
+2026-06-25 16:20:15,377 | INFO | Consumer closed
+2026-06-25 16:20:15,386 | INFO | Publishing event: {'event_id': '0f8f2e0f-a144-4cf0-bb96-511384b1631f', 'correlation_id': '257c22e6-4378-49ed-8549-b40b490d2eab', 'type': 'ORDER_CREATED', 'payload': {'order_id': 200, 'amount': 900}}
+2026-06-25 16:20:15,395 | INFO | Published partition=0
+2026-06-25 16:20:15,396 | INFO | Producer closed

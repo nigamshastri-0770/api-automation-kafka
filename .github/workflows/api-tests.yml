@@ -125,6 +125,7 @@ jobs:
 
           pytest \
             -v \
+            -n auto \
             -s \
             --alluredir=allure-results
 
